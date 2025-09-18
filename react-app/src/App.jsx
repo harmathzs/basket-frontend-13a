@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default class App extends React.Component {
+  state = {
+    cart: {
+            items:[
+                //{name:'Laptop',price:1200,quantity:1},
+                //{name:'Headphone',price:200,quantity:1}
+            ]
+          },
+    nev: null,
+    ar: 0,
+    db: null,
+  }
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  handleButtonClick = e => {
+    e.preventDefault();
+
+    // implement cart item insertion
+    console.log('handleButtonClick state', this.state)
+    if (this.state.ar && this.state.ar>0 && this.state.db && this.state.db>0 && this.state.nev) {
+      this.setState({cart: {items: 
+        [...this.state.cart.items, 
+          {
+            name: this.state.nev,
+            price: +this.state.ar,
+            quantity: +this.state.db
+          }
+        ]
+      }})
+    } else {
+      alert('Please fill all fields.')
+    }
+  }
+
+  render() {
+    return <div>
+      <form>
+        <h1>Termék hozzáadása a kosárhoz</h1>
+        <label htmlFor="input_nev">Termék neve: </label>
+        <input type="text" id="input_nev" name="input_nev" placeholder="Név..." required
+          onChange={e=>this.setState({nev: e.target.value})}
+        /><br />
+        <label htmlFor="input_ar">Ár: </label>
+        <input type="number" id="input_ar" name="input_ar" value={this.state.ar}
+          onChange={e=>this.setState({ar: +e.target.value})}
+        /><br />
+        <label htmlFor="input_db">Mennyiség: </label>
+        <input type="text" id="input_db" name="ininput_dbput_nev" placeholder="Mennyiség..." required
+          onChange={e=>this.setState({db: +e.target.value})}
+        /><br />             
+        <input type="button" id="btn_submit" name="btn_submit" value="Hozzáadás a kosárhoz" onClick={this.handleButtonClick} /><br />
+      </form>
+      <hr />
+      <h3>A kosár tartalma</h3>
+      
+        {
+          this.state.cart.items.length>=1 
+          ?
+            <ul>
+              {this.state.cart.items.map((item, idx)=><li key={idx}>
+                {item.name} - Ár: {item.price} Ft, Mennyiség: {item.quantity}
+              </li>)}
+            </ul>
+          : 
+            <p>Üres a kosár.</p>
+        }
+      
+    </div>
+  }
 }
-
-export default App
