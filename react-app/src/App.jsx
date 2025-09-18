@@ -9,14 +9,28 @@ export default class App extends React.Component {
             ]
           },
     nev: null,
-    ar: null,
+    ar: 0,
     db: null,
   }
 
   handleButtonClick = e => {
     e.preventDefault();
 
-    // TODO - implement cart item insertion
+    // implement cart item insertion
+    console.log('handleButtonClick state', this.state)
+    if (this.state.ar && this.state.ar>0 && this.state.db && this.state.db>0 && this.state.nev) {
+      this.setState({cart: {items: 
+        [...this.state.cart.items, 
+          {
+            name: this.state.nev,
+            price: +this.state.ar,
+            quantity: +this.state.db
+          }
+        ]
+      }})
+    } else {
+      alert('Please fill all fields.')
+    }
   }
 
   render() {
@@ -24,16 +38,16 @@ export default class App extends React.Component {
       <form>
         <h1>Termék hozzáadása a kosárhoz</h1>
         <label htmlFor="input_nev">Termék neve: </label>
-        <input type="text" id="input_nev" name="input_nev" placeholder="Név..." 
-          onChange={value=>this.setState({nev: value})}
+        <input type="text" id="input_nev" name="input_nev" placeholder="Név..." required
+          onChange={e=>this.setState({nev: e.target.value})}
         /><br />
         <label htmlFor="input_ar">Ár: </label>
-        <input type="number" id="input_ar" name="input_ar" value={0}
-          onChange={value=>this.setState({ar: value})}
+        <input type="number" id="input_ar" name="input_ar" value={this.state.ar}
+          onChange={e=>this.setState({ar: +e.target.value})}
         /><br />
         <label htmlFor="input_db">Mennyiség: </label>
-        <input type="text" id="input_db" name="ininput_dbput_nev" placeholder="Mennyiség..."
-          onChange={value=>this.setState({db: value})}
+        <input type="text" id="input_db" name="ininput_dbput_nev" placeholder="Mennyiség..." required
+          onChange={e=>this.setState({db: +e.target.value})}
         /><br />             
         <input type="button" id="btn_submit" name="btn_submit" value="Hozzáadás a kosárhoz" onClick={this.handleButtonClick} /><br />
       </form>
