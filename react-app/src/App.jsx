@@ -41,12 +41,15 @@ export default class App extends React.Component {
       <h3>A kosár tartalma</h3>
       
         {
-          this.state.cart.items.length>=1 && 
+          this.state.cart.items.length>=1 
+          ?
             <ul>
               {this.state.cart.items.map((item, idx)=><li key={idx}>
                 {item.name} - Ár: {item.price} Ft, Mennyiség: {item.quantity}
               </li>)}
             </ul>
+          : 
+            <p>Üres a kosár.</p>
         }
       
     </div>
